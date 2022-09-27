@@ -3,6 +3,7 @@ package routes
 import (
 	"JetChatClientGo/utils"
 	"net/http"
+	"regexp"
 )
 
 type Credentials struct {
@@ -21,9 +22,15 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		}
 
 		credentials := Credentials{
-			Username: r.FormValue("username"),
 			Password: r.FormValue("password"),
-			Email:    r.FormValue("email"),
+		}
+
+		identifiant := r.FormValue("identifiant")
+
+		if regexp.MustCompile(utils.EmailRegex).MatchString(identifiant) {
+			credentials.Email = identifiant
+		} else {
+			credentials.Username = identifiant
 		}
 
 		utils.Logger.Println(credentials)

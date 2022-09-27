@@ -1,8 +1,8 @@
 {{define "login"}}
     <div id="login">
         <form action="/login" method="post">
-            <input type="text" name="identifiant" placeholder="Username or Email">
-            <input type="password" name="password" placeholder="Password">
+            <input autocomplete="username" name="identifiant" pattern="{{.EmailRegex}}" placeholder="Username or Email" type="text">
+            <input autocomplete="current-password" name="password" placeholder="Password" type="password">
             <input type="submit" value="Login">
         </form>
     </div>

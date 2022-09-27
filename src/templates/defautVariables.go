@@ -1,7 +1,12 @@
 package templates
 
+import (
+	"JetChatClientGo/utils"
+)
+
 var defaultVariables = map[string]any{
-	"Title": "JetChat",
+	"Title":      "JetChat",
+	"EmailRegex": utils.EmailRegex,
 }
 
 func AddDefaultVariable(name string, value any) {
