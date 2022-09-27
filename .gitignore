@@ -1,0 +1,8 @@
+### GoLand
+.idea
+
+### Go
+bin/
+
+### Environment
+.env
