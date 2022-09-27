@@ -31,11 +31,10 @@ func main() {
 		utils.Logger.Println("Route not found: " + r.URL.Path)
 	})
 
-	utils.Logger.Println("Starting server on port " + strconv.Itoa(port))
+	staticFolder := http.FileServer(http.Dir("static"))
+	server.AddHandler("/static/", http.StripPrefix("/static/", staticFolder))
 
-	server.AddRoute("/", func(w http.ResponseWriter, r *http.Request) {
-		utils.Logger.Printf("%v %v", r.Method, r.URL.RequestURI())
-	})
+	utils.Logger.Println("Starting server on port " + strconv.Itoa(port))
 
 	RegisterRoutes(server)
 

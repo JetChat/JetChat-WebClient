@@ -3,12 +3,15 @@
     <html lang="en">
         <head>
             <meta charset="UTF-8">
-            <title>Title</title>
+            <title>{{putOrElse .Title "JetChat"}}</title>
+
             {{if .Debug}}
                 <script>
 					window.debugVariables = {{js (jsonPretty .)}};
                 </script>
             {{end}}
+
+            <link rel="stylesheet" href="/static/css/style.css">
         </head>
         <body>
             <main id="main">
