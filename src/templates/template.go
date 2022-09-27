@@ -7,8 +7,7 @@ import (
 	"path"
 )
 
-var templatesDirectory = path.Join("resources", "templates")
-
+const templatesDirectory = "templates"
 const mainTemplate = "main"
 
 type Template struct {
@@ -51,6 +50,8 @@ func RenderTemplate(name string, w http.ResponseWriter, variables map[string]any
 		Functions: make(template.FuncMap),
 		FileName:  name,
 	}
+
+	t.Variables["TemplateName"] = name
 
 	for key, value := range defaultVariables {
 		t.Variables[key] = value
