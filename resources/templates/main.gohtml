@@ -1,0 +1,19 @@
+{{define "main"}}
+    <!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <title>Title</title>
+            {{if .Debug}}
+                <script>
+					window.debugVariables = {{js (jsonPretty .)}};
+                </script>
+            {{end}}
+        </head>
+        <body>
+            <main id="main">
+                {{.RenderedContent}}
+            </main>
+        </body>
+    </html>
+{{end}}
