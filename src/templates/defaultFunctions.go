@@ -58,6 +58,14 @@ func JS(s string) template.JS {
 	return template.JS(s)
 }
 
+func PutOrElse(v, def any) any {
+	if v == nil {
+		return def
+	}
+
+	return v
+}
+
 var DefaultFunctions = template.FuncMap{
 	"add":        Add,
 	"sub":        Sub,
@@ -70,4 +78,5 @@ var DefaultFunctions = template.FuncMap{
 	"jsonPretty": JsonPretty,
 	"html":       HTML,
 	"js":         JS,
+	"putOrElse":  PutOrElse,
 }
