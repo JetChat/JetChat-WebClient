@@ -7,16 +7,15 @@ import (
 	"github.com/joho/godotenv"
 	"net/http"
 	"os"
-	"strconv"
 )
-
-const port = 8080
 
 func main() {
 	err := godotenv.Load("./.env")
 	if err != nil {
 		utils.LogError(err)
 	}
+
+	port := os.Getenv("PORT")
 
 	templates.AddDefaultVariable("Env", os.Getenv("ENV"))
 	templates.AddDefaultVariable("Debug", os.Getenv("ENV") == "debug")
@@ -30,7 +29,7 @@ func main() {
 	staticFolder := http.FileServer(http.Dir("static"))
 	server.AddHandler("/static/", http.StripPrefix("/static/", staticFolder))
 
-	utils.Logger.Println("Starting server on port " + strconv.Itoa(port))
+	utils.Logger.Println("Starting server on port " + port)
 
 	RegisterRoutes(server)
 

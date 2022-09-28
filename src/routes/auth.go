@@ -34,5 +34,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		}
 
 		utils.Logger.Println(credentials)
+
+		http.Redirect(w, r, "/", http.StatusSeeOther)
 	}
 }

@@ -15,17 +15,22 @@ type Server struct {
 	RecoverHandler func(w http.ResponseWriter, r *http.Request)
 }
 
-func NewServer(port int) *Server {
+func NewServer(port string) *Server {
+	intPort, err := strconv.Atoi(port)
+	if err != nil {
+		utils.LogError(err)
+	}
+
 	return &Server{
 		NativeServer: &http.Server{
-			Addr:         ":" + strconv.Itoa(port),
+			Addr:         ":" + port,
 			Handler:      nil,
 			IdleTimeout:  0,
 			ReadTimeout:  0,
 			WriteTimeout: 0,
 		},
 		Mux:            http.NewServeMux(),
-		port:           port,
+		port:           intPort,
 		DefaultHandler: nil,
 		Routes:         make(map[string]http.Handler),
 		RecoverHandler: nil,
@@ -36,6 +41,14 @@ func (s *Server) AddRoute(path string, handler func(w http.ResponseWriter, r *ht
 	handlerFunc := http.HandlerFunc(handler)
 	s.Routes[path] = handlerFunc
 	s.Mux.Handle(path, handlerFunc)
+	s.NativeServer.Handler = s.Mux
+
+	utils.Logger.Println("Added route: " + path)
+}
+
+func (s *Server) AddHandler(path string, handler http.Handler) {
+	s.Routes[path] = handler
+	s.Mux.Handle(path, handler)
 	s.NativeServer.Handler = s.Mux
 
 	utils.Logger.Println("Added route: " + path)
