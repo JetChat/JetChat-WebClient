@@ -7,8 +7,9 @@ import (
 var defaultVariables = map[string]any{
 	"Title":      "JetChat",
 	"EmailRegex": utils.EmailRegex,
+	"Connected":  false,
 }
 
-func AddDefaultVariable(name string, value any) {
+func SetDefaultVariable(name string, value any) {
 	defaultVariables[name] = value
 }
