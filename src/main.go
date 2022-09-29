@@ -1,6 +1,7 @@
 package main
 
 import (
+	"JetChatClientGo/api"
 	server2 "JetChatClientGo/server"
 	"JetChatClientGo/templates"
 	"JetChatClientGo/utils"
@@ -16,10 +17,11 @@ func main() {
 	}
 
 	port := os.Getenv("PORT")
+	api.ApiURL = os.Getenv("API_URL")
 
-	templates.AddDefaultVariable("Env", os.Getenv("ENV"))
-	templates.AddDefaultVariable("Debug", os.Getenv("ENV") == "debug")
-	templates.AddDefaultVariable("Envs", os.Environ())
+	templates.SetDefaultVariable("Env", os.Getenv("ENV"))
+	templates.SetDefaultVariable("Debug", os.Getenv("ENV") == "debug")
+	templates.SetDefaultVariable("Envs", os.Environ())
 
 	server := server2.NewServer(port)
 	server.SetDefaultHandler(func(w http.ResponseWriter, r *http.Request) {

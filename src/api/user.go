@@ -1,6 +1,9 @@
 package api
 
-import "time"
+import (
+	"net/http"
+	"time"
+)
 
 type User struct {
 	UserID        uint64    `json:"user_id"`
@@ -9,4 +12,13 @@ type User struct {
 	Description   string    `json:"description"`
 	Discriminator int       `json:"discriminator"`
 	Username      string    `json:"username"`
+}
+
+func GetSelf(r *http.Request) (*User, error) {
+	request := NewRequest[User]("/users/me")
+	request.Json()
+	request.Cookies = r.Cookies()
+	user, _, err := request.SendWithResponse()
+
+	return user, err
 }
