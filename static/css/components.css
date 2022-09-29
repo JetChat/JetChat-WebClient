@@ -1,0 +1,26 @@
+input.simple {
+	background-color: var(--grey-200);
+	border: 1px solid var(--grey-300);
+	border-radius: .5rem;
+	color: var(--white-100);
+	font-size: 14px;
+	padding: .5rem 1rem;
+}
+
+button.submit {
+	background-color: var(--grey-200);
+	border: 1px solid var(--grey-300);
+	border-radius: .6rem;
+	color: var(--white-100);
+	font-size: 14px;
+	padding: .5rem 1rem;
+}
+
+.error {
+	color: var(--error);
+	font-size: .8rem;
+}
+
+.error:empty {
+	display: none;
+}

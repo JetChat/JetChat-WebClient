@@ -1,0 +1,29 @@
+@import 'auth-page.css';
+@import 'components.css';
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&familiy=Rubik:wght@300;400;500;700&display=swap');
+
+:root {
+	--grey-100: #1A1A1A;
+	--grey-200: #202123;
+	--grey-300: #292B2F;
+	--grey-400: #2F2F2F;
+	--grey-500: #383838;
+	--grey-600: #4F4F4F;
+	--grey-700: #828282;
+	--grey-800: #9E9E9E;
+
+	--white-100: #BEBEBE;
+	--white-200: #CACACA;
+	--white-300: #E0E0E0;
+	--white-400: #F2F2F2;
+	--white-500: #FFFFFF;
+
+	--error: #804343;
+}
+
+body {
+	color: var(--white-500);
+	font-family: 'Roboto', sans-serif;
+	padding: 0;
+	margin: 0;
+}

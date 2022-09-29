@@ -1,9 +1,22 @@
 {{define "login"}}
-    <div id="login">
+    <div id="login" class="content">
         <form action="/login" method="post">
-            <input autocomplete="username" name="identifiant" pattern="{{.EmailRegex}}" placeholder="Username or Email" type="text">
-            <input autocomplete="current-password" name="password" placeholder="Password" type="password">
-            <input type="submit" value="Login">
+            <input autocomplete="username"
+                   class="simple"
+                   name="identifiant"
+                   placeholder="Username or Email"
+                   type="text">
+            <input autocomplete="current-password"
+                   class="simple"
+                   name="password"
+                   placeholder="Password"
+                   type="password">
+
+            <p class="error">
+                {{.Error}}
+            </p>
+
+            <button class="submit" type="submit">Login</button>
         </form>
     </div>
 {{end}}
