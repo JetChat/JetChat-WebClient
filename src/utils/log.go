@@ -8,7 +8,12 @@ import (
 
 var Logger = log.New(os.Stdout, "[JetChatClientGo] ", log.LstdFlags)
 
-func LogError(err error) {
+func FatalError(err error) {
 	debug.PrintStack()
 	Logger.Fatal(err)
+}
+
+func LogError(err error) {
+	debug.PrintStack()
+	Logger.Println(err)
 }

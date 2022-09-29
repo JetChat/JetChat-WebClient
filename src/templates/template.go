@@ -18,7 +18,7 @@ type Template struct {
 
 func (t *Template) Render(w http.ResponseWriter) error {
 	tmpl := template.New("").Funcs(DefaultFunctions).Funcs(t.Functions)
-	tmpl, err := tmpl.ParseGlob(path.Join(templatesDirectory, "*.gohtml"))
+	tmpl, err := tmpl.ParseGlob(path.Join(templatesDirectory, "*.tmpl"))
 	if err != nil {
 		return err
 	}
