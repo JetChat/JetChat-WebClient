@@ -15,13 +15,15 @@ type Credentials struct {
 	Email    string `json:"email"`
 }
 
+var CredentialsCache = make(map[string]Credentials)
+
 func Login(w http.ResponseWriter, r *http.Request) {
 	ShowTemplateOnGet(w, r, "login")
 
 	if r.Method == "POST" {
 		err := r.ParseForm()
 		if err != nil {
-			utils.LogError(err)
+			utils.FatalError(err)
 		}
 
 		credentials := Credentials{
@@ -43,21 +45,29 @@ func Login(w http.ResponseWriter, r *http.Request) {
 				http.Redirect(w, r, "/login", http.StatusSeeOther)
 				return
 			} else {
-				utils.LogError(err)
+				utils.FatalError(err)
 			}
 		}
-		utils.Logger.Println("Connection cookie: " + connectionCookie.String())
 		templates.SetDefaultVariable("Connected", err == nil)
-		api.ConnectionCookie = connectionCookie
+		r.AddCookie(connectionCookie)
+		w.Header().Add("Set-Cookie", connectionCookie.String())
+
+		CredentialsCache[r.RemoteAddr] = credentials
 
 		self, err := api.GetSelf(r)
+		if err != nil {
+			utils.FatalError(err)
+		}
+		userAppVariables := CachedAppVariables[self.UserID]
+		userAppVariables.Guilds, err = api.GetGuilds(r)
 		if err != nil {
 			utils.LogError(err)
 		}
 
-		templates.SetDefaultVariable("Self", self)
+		CachedAppVariables[self.UserID] = userAppVariables
 
-		http.Redirect(w, r, "/", http.StatusSeeOther)
+		templates.SetDefaultVariable("Self", self)
+		http.Redirect(w, r, "/app", http.StatusSeeOther)
 	}
 }
 
@@ -81,4 +91,28 @@ func Connect(credentials Credentials) (*http.Cookie, error) {
 	}
 
 	return res.Cookies()[0], nil
+}
+
+func Reconnect(r *http.Request) error {
+	credentials := CredentialsCache[r.RemoteAddr]
+	cookie, err := Connect(credentials)
+	if err != nil {
+		return err
+	}
+
+	r.AddCookie(cookie)
+	return nil
+}
+
+func CheckConnection(w http.ResponseWriter, r *http.Request) (redirect bool) {
+	sessionCookie, err := r.Cookie(utils.ConnectionCookie)
+	if err != nil || sessionCookie.Value == "" {
+		err = Reconnect(r)
+		if err != nil {
+			http.Redirect(w, r, "/login", http.StatusSeeOther)
+			return true
+		}
+	}
+
+	return false
 }

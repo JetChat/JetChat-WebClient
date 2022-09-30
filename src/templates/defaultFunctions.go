@@ -6,35 +6,35 @@ import (
 	"strings"
 )
 
-func Add(a, b int) int {
+func add(a, b int) int {
 	return a + b
 }
 
-func Sub(a, b int) int {
+func sub(a, b int) int {
 	return a - b
 }
 
-func Mul(a, b int) int {
+func mul(a, b int) int {
 	return a * b
 }
 
-func Div(a, b int) int {
+func div(a, b int) int {
 	return a / b
 }
 
-func Repeat(s string, n int) template.HTML {
+func repeat(s string, n int) template.HTML {
 	return template.HTML(strings.Repeat(s, n))
 }
 
-func Join(a []string, sep string) string {
+func join(a []string, sep string) string {
 	return strings.Join(a, sep)
 }
 
-func Split(s, sep string) []string {
+func split(s, sep string) []string {
 	return strings.Split(s, sep)
 }
 
-func Json(v any) string {
+func jsonify(v any) string {
 	marshal, err := json.Marshal(v)
 	if err != nil {
 		return ""
@@ -42,7 +42,7 @@ func Json(v any) string {
 	return string(marshal)
 }
 
-func JsonPretty(v any) string {
+func jsonPretty(v any) string {
 	marshal, err := json.MarshalIndent(v, "", "\t")
 	if err != nil {
 		return ""
@@ -50,15 +50,15 @@ func JsonPretty(v any) string {
 	return string(marshal)
 }
 
-func HTML(s string) template.HTML {
+func html(s string) template.HTML {
 	return template.HTML(s)
 }
 
-func JS(s string) template.JS {
+func js(s string) template.JS {
 	return template.JS(s)
 }
 
-func PutOrElse(v, def any) any {
+func putOrElse(v, def any) any {
 	if v == nil {
 		return def
 	}
@@ -66,17 +66,27 @@ func PutOrElse(v, def any) any {
 	return v
 }
 
-var DefaultFunctions = template.FuncMap{
-	"add":        Add,
-	"sub":        Sub,
-	"mul":        Mul,
-	"div":        Div,
-	"repeat":     Repeat,
-	"join":       Join,
-	"split":      Split,
-	"json":       Json,
-	"jsonPretty": JsonPretty,
-	"html":       HTML,
-	"js":         JS,
-	"putOrElse":  PutOrElse,
+func jsImport(s string) template.HTML {
+	return template.HTML("<script type=\"module\" src=\"/static/js/" + s + "\"></script>")
+}
+
+func cssImport(s string) template.HTML {
+	return template.HTML("<link rel=\"stylesheet\" href=\"/static/css/" + s + "\">")
+}
+
+var defaultFunctions = template.FuncMap{
+	"add":        add,
+	"sub":        sub,
+	"mul":        mul,
+	"div":        div,
+	"repeat":     repeat,
+	"join":       join,
+	"split":      split,
+	"json":       jsonify,
+	"jsonPretty": jsonPretty,
+	"html":       html,
+	"js":         js,
+	"putOrElse":  putOrElse,
+	"jsImport":   jsImport,
+	"cssImport":  cssImport,
 }

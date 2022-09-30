@@ -1,6 +1,7 @@
 package api
 
 import (
+	"JetChatClientGo/utils"
 	"bytes"
 	"encoding/json"
 	"net/http"
@@ -10,8 +11,6 @@ var DefaultHeaders = map[string]string{
 	"User-Agent": "JetChatClientGo",
 	"Connection": "keep-alive",
 }
-
-var ConnectionCookie *http.Cookie
 
 type Request[T any] struct {
 	client    *http.Client
@@ -36,8 +35,19 @@ func (r *Request[T]) SetBody(body any) {
 	r.Body = body
 }
 
-func (r *Request[T]) Json() {
+func (r *Request[T]) Json() *Request[T] {
 	r.AddHeader("Content-Type", "application/json")
+	return r
+}
+
+func (r *Request[T]) Session(rs *http.Request) *Request[T] {
+	sessionCookie, err := rs.Cookie(utils.ConnectionCookie)
+	if err != nil {
+		return r
+	}
+
+	r.Cookies = append(r.Cookies, sessionCookie)
+	return r
 }
 
 func (r *Request[T]) Send() (*http.Response, error) {
@@ -108,9 +118,6 @@ func (r *Request[T]) prepareRequest() (*http.Request, *http.Response, error) {
 		req.AddCookie(cookie)
 	}
 
-	if ConnectionCookie != nil {
-		req.AddCookie(ConnectionCookie)
-	}
 	return req, nil, err
 }
 

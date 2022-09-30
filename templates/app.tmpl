@@ -1,0 +1,21 @@
+{{define "app"}}
+    {{jsImport "app.js"}}
+
+    <div id="app">
+        <div class="guilds">
+            {{template "guilds" .}}
+        </div>
+    </div>
+{{end}}
+
+{{define "guilds"}}
+    {{$Current := .Current}}
+
+    {{range .Guilds}}
+        <div class="guild">
+            <div class="guild-icon" title="{{.Name}}">
+                <img src="{{.Icon}}" class="icon"  alt="Guild Icon">
+            </div>
+        </div>
+    {{end}}
+{{end}}

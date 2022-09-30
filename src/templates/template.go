@@ -17,7 +17,7 @@ type Template struct {
 }
 
 func (t *Template) Render(w http.ResponseWriter) error {
-	tmpl := template.New("").Funcs(DefaultFunctions).Funcs(t.Functions)
+	tmpl := template.New("").Funcs(defaultFunctions).Funcs(t.Functions)
 	tmpl, err := tmpl.ParseGlob(path.Join(templatesDirectory, "*.tmpl"))
 	if err != nil {
 		return err
